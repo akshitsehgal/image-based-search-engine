@@ -118,7 +118,7 @@ if len(faces_test)>1:
     load_and_save_img(test_path,counter_test,'images/test_extracted_images/')
     for img_test in glob.glob('images/test_extracted_images' + '/' + '*.*'):
         try:
-            img_encoded_test = encode_image(img_test)[0]
+            img_encoded_test = encode_image(img_test)
         except:
             continue
         results = face_recognition.compare_faces(encoded_vec_list,img_encoded_test,tolerance=0.6)
