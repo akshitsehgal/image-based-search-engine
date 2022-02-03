@@ -76,17 +76,32 @@ if uploaded_file is not None:
     file_details = {"FileName":uploaded_file.name,"FileType":uploaded_file.type}
     st.write(file_details)
     img = load_image(uploaded_file)
-    #st.image(img,height=250,width=250)
+    # st.image(img,height=250,width=250)
     with open(os.path.join("image_data",uploaded_file.name),"wb") as f:
       f.write(uploaded_file.getbuffer())
     st.success("Saved File")
     verifications = DeepFace.find('image_data/' + uploaded_file.name,db_path='images/Train',enforce_detection=False)
+    paths = verifications['identity'].to_list()
+    len_paths = int(0.5 * len(paths))
+    paths = paths[:len_paths]
+    # image_iterator = paginator("Select a sunset page", paths)
+    # indices_on_page, images_on_page = map(list, zip(*image_iterator))
+    # st.image(images_on_page, width=200, caption=indices_on_page,use_column_width=200)
+    col1,col2,col3,col4 = st.columns(4)
+    
+    for i in range(0,len_paths-4,4):
+        with col1:
+            st.image(paths[i])
+        with col2:
+            st.image(paths[i+1])
+        with col3:
+            st.image(paths[i+2])
+        with col4:
+            st.image(paths[i+3])
+    
     st.write(verifications)
-    paths = verifications['identity'].to_numpy()
-    st.write(paths)
-    image_iterator = paginator("Select a sunset page", paths)
-    indices_on_page, images_on_page = map(list, zip(*image_iterator))
-    st.image(images_on_page, width=100, caption=indices_on_page,use_column_width=100)
+
+
 
 
 
